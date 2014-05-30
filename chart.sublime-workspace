@@ -1,0 +1,450 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"fun",
+				"function"
+			],
+			[
+				"exte",
+				" ∆ extends None"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "/C/Git/chart/test/specs/exampleSpec.ts",
+			"settings":
+			{
+				"buffer_size": 2919,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/C/Git/chart/src/scripts/helloworld.ts",
+			"settings":
+			{
+				"buffer_size": 1720,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"contents": "module.exports = function(grunt) {\n    'use strict';\n\n    grunt.loadNpmTasks('grunt-ts');                     // https://github.com/grunt-ts/grunt-ts\n    grunt.loadNpmTasks('grunt-tslint');                 // https://github.com/palantir/grunt-tslint\n    grunt.loadNpmTasks('grunt-contrib-clean');          // https://github.com/gruntjs/grunt-contrib-clean\n    grunt.loadNpmTasks('grunt-contrib-jshint');         // https://github.com/gruntjs/grunt-contrib-jshint\n    grunt.loadNpmTasks('grunt-contrib-jasmine');        // https://github.com/gruntjs/grunt-contrib-jasmine\n    grunt.loadNpmTasks('grunt-contrib-copy');\n    grunt.loadNpmTasks('grunt-contrib-concat');\n    grunt.loadNpmTasks('grunt-contrib-uglify');\n    grunt.loadNpmTasks('grunt-contrib-cssmin');\n    grunt.loadNpmTasks('grunt-contrib-connect');\n    grunt.loadNpmTasks('grunt-contrib-htmlmin');\n    grunt.loadNpmTasks('grunt-contrib-imagemin');\n    grunt.loadNpmTasks('grunt-rev');\n    grunt.loadNpmTasks('grunt-autoprefixer');\n    grunt.loadNpmTasks('grunt-usemin');\n    grunt.loadNpmTasks('grunt-newer');\n    grunt.loadNpmTasks('grunt-svgmin');\n    grunt.loadNpmTasks('grunt-concurrent');\n\n    // Time how long tasks take. Can help when optimizing build times\n    require('time-grunt')(grunt);\n\n    // Configurable paths\n    var config = {\n        app: 'src',\n        dist: 'dist'\n    };\n\n    grunt.initConfig({\n\n        // Project settings\n        config: config,\n\n        // Empties folders to start fresh\n        clean: ['dist/*.*',\n                'dist',\n                '.tmp',\n                '<%= config.dist %>/*',\n                '!<%= config.dist %>/.git*',\n                'test/reports/*.*',\n                'test/reports',                         // Wipe out previous builds and test reporting.\n                'test/specs/*.js'],\n\n        // typescript compiler\n        ts: {\n            build: {\n                src: ['src/scripts/**/*.ts'],               // The source TypeScript files, http://gruntjs.com/configuring-tasks#files\n                reference: 'src/scripts/_reference.ts',   // If specified, generate this file that to can use for reference management\n                out: 'src/scripts/main.js',                     // If specified, the generate JavaScript files are placed here. Only works if out is not specified\n                options: {                                  // Use to override the default options, http://gruntjs.com/configuring-tasks#options\n                    target: 'es3',                          // 'es3' (default) | 'es5'\n                    sourceMap: true,                        // true (default) | false\n                    declaration: false,                     // true | false (default)\n                    removeComments: true                    // true (default) | false\n                },\n            },\n            test: {                                         // The source TypeScript files, http://gruntjs.com/configuring-tasks#files\n                src: ['test/**/*.ts'],\n                options: {\n                    target: 'es3',\n                    sourceMap: true,\n                    declaration: false,\n                    removeComments: true\n                },\n            }\n        },\n\n        // test runner using jasmine\n        jasmine: {\n            run: {\n                src: 'src/scripts/**/*.js',\n                options: {\n                    specs: 'test/specs/*Spec.js',\n                    helpers: 'test/specs/*Helper.js',\n                    version: '2.0.0',\n                    vendor: [\n                        'vendor/bower/jquery/dist/jquery.js',\n                        'vendor/bower/sinonjs/sinon.js'\n                    ]\n                }\n            },\n            coverage: {\n                src: ['src/scripts/**/*.js'],\n                options: {\n                    specs: ['test/specs/*Spec.js'],\n                    helpers: 'test/specs/*Helper.js',\n                    version: '2.0.0',\n                    vendor: [\n                        'vendor/bower/jquery/dist/jquery.js',\n                        'vendor/bower/sinonjs/sinon.js'\n                    ],\n                    template: require('grunt-template-jasmine-istanbul'),\n                    templateOptions: {\n                        coverage: 'test/reports/coverage/coverage.json',\n                        report: [\n							{\n							    type: 'html',\n							    options: {\n							        dir: 'test/reports/coverage/html'\n							    }\n							},\n							{\n							    type: 'cobertura',\n							    options: {\n							        dir: 'test/reports/coverage/cobertura'\n							    }\n							},\n							{\n							    type: 'text-summary'\n							}\n                        ],\n                        thresholds: {\n                            lines: 75,\n                            statements: 75,\n                            branches: 75,\n                            functions: 90\n                        }\n                    }\n                }\n            }\n        },\n\n        // Make sure code styles are up to par and there are no obvious mistakes\n        jshint: {\n            all: ['Gruntfile.js'],\n            options: {\n                jshintrc: '.jshintrc'\n            }\n        },\n\n        // Make sure TypeScript code styles are up to par\n        tslint: {\n            options: {\n                configuration: grunt.file.readJSON('.tslintrc')\n            },\n            all: {\n                src: ['app/**/*.ts', 'test/**/*.ts']\n            }\n        },\n\n        // The actual grunt server settings\n        connect: {\n            options: {\n                port: 9000,\n                open: true,\n                livereload: 35729,\n                // Change this to '0.0.0.0' to access the server from outside\n                hostname: 'localhost'\n            },\n            dist: {\n                options: {\n                    base: '<%= config.dist %>',\n                    livereload: true\n                }\n            }\n        },\n\n        // Add vendor prefixed styles\n        autoprefixer: {\n            options: {\n                browsers: ['last 1 version']\n            },\n            dist: {\n                files: [{\n                    expand: true,\n                    cwd: '.tmp/styles/',\n                    src: '{,*/}*.css',\n                    dest: '.tmp/styles/'\n                }]\n            }\n        },\n\n        // Automatically inject Bower components into the HTML file\n        bowerInstall: {\n            app: {\n                src: ['<%= config.app %>/index.html'],\n                exclude: ['/vendor/bower/bootstrap/dist/js/bootstrap.js']\n            }\n        },\n\n        // Renames files for browser caching purposes\n        rev: {\n            dist: {\n                files: {\n                    src: [\n                        '<%= config.dist %>/scripts/{,*/}*.js',\n                        '<%= config.dist %>/styles/{,*/}*.css',\n                        '<%= config.dist %>/images/{,*/}*.*',\n                        '<%= config.dist %>/styles/fonts/{,*/}*.*',\n                        '<%= config.dist %>/*.{ico,png}'\n                    ]\n                }\n            }\n        },\n\n        // Reads HTML for usemin blocks to enable smart builds that automatically\n        // concat, minify and revision files. Creates configurations in memory so\n        // additional tasks can operate on them\n        useminPrepare: {\n            options: {\n                dest: '<%= config.dist %>'\n            },\n            html: '<%= config.app %>/index.html'\n        },\n\n        // Performs rewrites based on rev and the useminPrepare configuration\n        usemin: {\n            options: {\n                assetsDirs: ['<%= config.dist %>', '<%= config.dist %>/images']\n            },\n            html: ['<%= config.dist %>/{,*/}*.html'],\n            css: ['<%= config.dist %>/styles/{,*/}*.css']\n        },\n\n        // The following *-min tasks produce minified files in the dist folder\n        imagemin: {\n            dist: {\n                files: [{\n                    expand: true,\n                    cwd: '<%= config.app %>/images',\n                    src: '{,*/}*.{gif,jpeg,jpg,png}',\n                    dest: '<%= config.dist %>/images'\n                }]\n            }\n        },\n\n        svgmin: {\n            dist: {\n                files: [{\n                    expand: true,\n                    cwd: '<%= config.app %>/images',\n                    src: '{,*/}*.svg',\n                    dest: '<%= config.dist %>/images'\n                }]\n            }\n        },\n\n        htmlmin: {\n            dist: {\n                options: {\n                    collapseBooleanAttributes: true,\n                    collapseWhitespace: true,\n                    removeAttributeQuotes: true,\n                    removeCommentsFromCDATA: true,\n                    removeEmptyAttributes: true,\n                    removeOptionalTags: true,\n                    removeRedundantAttributes: true,\n                    useShortDoctype: true\n                },\n                files: [{\n                    expand: true,\n                    cwd: '<%= config.dist %>',\n                    src: '{,*/}*.html',\n                    dest: '<%= config.dist %>'\n                }]\n            }\n        },\n\n        // Copies remaining files to places other tasks can use\n        copy: {\n            dist: {\n                files: [{\n                    expand: true,\n                    dot: true,\n                    cwd: '<%= config.app %>',\n                    dest: '<%= config.dist %>',\n                    src: [\n                        '*.{ico,png,txt}',\n                        //'.htaccess',\n                        'images/{,*/}*.webp',\n                        '{,*/}*.html',\n                        'styles/fonts/{,*/}*.*'\n                    ]\n                }, {\n                    expand: true,\n                    dot: true,\n                    cwd: 'vendor/bower/bootstrap/dist',\n                    src: ['fonts/*.*'],\n                    dest: '<%= config.dist %>'\n                }]\n            },\n            styles: {\n                expand: true,\n                dot: true,\n                cwd: '<%= config.app %>/styles',\n                dest: '.tmp/styles/',\n                src: '{,*/}*.css'\n            }\n        },\n\n        // Run some tasks in parallel to speed up build process\n        concurrent: {\n            server: [\n                'copy:styles'\n            ],\n            test: [\n                'copy:styles'\n            ],\n            dist: [\n                'copy:styles',\n                'imagemin',\n                'svgmin'\n            ]\n        }\n    });\n\n    grunt.registerTask('check-code-style', [\n        'jshint:all',\n        'tslint:all'\n    ]);\n    grunt.registerTask('build', [\n        'ts:build',\n        'clean',\n        'useminPrepare',\n        'concurrent:dist',\n        'autoprefixer',\n        'concat',\n        'cssmin',\n        'uglify',\n        'copy:dist',\n        'rev',\n        'usemin',\n        'htmlmin'\n    ]);\n    grunt.registerTask('serve', [\n        'build',\n        'connect:dist:keepalive'\n    ]);\n    grunt.registerTask('test', [\n        'check-code-style',\n        'build',\n        'ts:test',\n        'jasmine:coverage'\n    ]);\n    grunt.registerTask('default', ['test']);\n};\n",
+			"file": "/C/Git/chart/Gruntfile.js",
+			"file_size": 11642,
+			"file_write_time": 130459365627899880,
+			"settings":
+			{
+				"buffer_size": 11303,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/C/Git/chart/src/index.html",
+			"settings":
+			{
+				"buffer_size": 3127,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"contents": "<!DOCTYPE html><html class=no-js><head><meta charset=utf-8><title>ts-boilerplate</title><meta name=description content=\"\"><meta name=viewport content=\"width=device-width\"><link rel=\"shortcut icon\" href=/favicon.ico><!-- Place favicon.ico and apple-touch-icon.png in the root directory --><link rel=stylesheet href=styles/5ade8ace.main.css><body><!--[if lt IE 10]>\n            <p class=\"browsehappy\">You are using an <strong>outdated</strong> browser. Please <a href=\"http://browsehappy.com/\">upgrade your browser</a> to improve your experience.</p>\n        <![endif]--><div class=container><div class=header><ul class=\"nav nav-pills pull-right\"><li class=active><a href=#>Home</a></li><li><a href=#>About</a></li><li><a href=#>Contact</a></li></ul><h3 class=text-muted>MyApp</h3></div><div class=jumbotron><h1>Simple web app</h1><p class=lead>Using TypeScript to build beautiful web apps!</p><p><button class=\"btn btn-lg btn-success\" id=btn><span class=\"glyphicon glyphicon-play\"></span> Click to start!</button></p><p style=\"font-style: italic\" id=content></p></div><div class=\"row marketing\"><div class=col-lg-6><h4>ts-boilerplate</h4><p>A boilerplate for building <strong>TypeScript</strong> applications.</p></div></div><div class=footer><p>by Diullei Gomes (<a href=https://github.com/Diullei>@diullei</a>)</p></div></div><script src=scripts/123a0b5e.main.js></script>",
+			"file": "/C/Git/chart/dist/index.html",
+			"file_size": 1376,
+			"file_write_time": 130459443355349387,
+			"settings":
+			{
+				"buffer_size": 1373,
+				"line_ending": "Windows"
+			}
+		}
+	],
+	"build_system": "",
+	"command_palette":
+	{
+		"height": 104.0,
+		"selected_items":
+		[
+			[
+				"insta",
+				"Package Control: Install Package"
+			],
+			[
+				"packa",
+				"Package Control: Install Package"
+			],
+			[
+				"c#",
+				"Set Syntax: C#"
+			],
+			[
+				"java",
+				"Set Syntax: JavaScript"
+			],
+			[
+				"json",
+				"Set Syntax: JSON"
+			],
+			[
+				"typescript",
+				"Typescript: Open Error Panel"
+			],
+			[
+				"type",
+				"Set Syntax: TypeScript"
+			]
+		],
+		"width": 416.0
+	},
+	"console":
+	{
+		"height": 0.0,
+		"history":
+		[
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"file_history":
+	[
+		"/C/Users/abraaoalves/Documents/Source/app/chart.sublime-project",
+		"/C/Users/abraaoalves/Documents/Source/app/test/setJsonTest.ts",
+		"/C/Users/abraaoalves/AppData/Roaming/Sublime Text 3/Packages/T3S/CHANGES.txt",
+		"/C/Users/abraaoalves/AppData/Roaming/Sublime Text 3/Packages/T3S/bin/tss.js",
+		"/C/Users/abraaoalves/AppData/Roaming/Sublime Text 3/Packages/T3S/bin/tss",
+		"/C/Users/abraaoalves/AppData/Roaming/Sublime Text 3/Packages/T3S/bin/readline.js",
+		"/C/Users/abraaoalves/Documents/Source/app/package.json",
+		"/C/Users/abraaoalves/AppData/Roaming/Sublime Text 3/Packages/T3S/Typescript.sublime-settings",
+		"/C/Users/abraaoalves/Documents/Source/app/temp/zoo.d.ts",
+		"/C/Users/abraaoalves/Documents/Source/app/temp/zoo_imp.ts",
+		"/C/Users/abraaoalves/Documents/Source/app/gulpfile.js",
+		"/C/Users/abraaoalves/Documents/Source/app/test/setJsonTest.js",
+		"/C/Users/abraaoalves/Documents/Source/app/tsd.json",
+		"/C/Users/abraaoalves/Documents/Source/app/typings/tsd.d.ts",
+		"/C/Users/abraaoalves/Documents/Source/app/typings/tests.d.ts",
+		"/C/Users/abraaoalves/Documents/Source/app/charts.js",
+		"/C/Users/abraaoalves/AppData/Roaming/Sublime Text 3/Packages/T3S/Default.sublime-commands",
+		"/C/Users/abraaoalves/AppData/Roaming/Sublime Text 3/Packages/User/Typescript.sublime-settings",
+		"/C/Users/abraaoalves/Documents/Source/app/typings/chai/chai.d.ts",
+		"/C/Users/abraaoalves/Documents/Source/app/typings/chai/chai-assert.d.ts",
+		"/C/Users/abraaoalves/Documents/Source/app/test/setJsonTest.js.map",
+		"/C/Users/abraaoalves/Documents/Source/app/node_modules/gulp-tsc/node_modules/rimraf/test/test-sync.js",
+		"/C/Users/abraaoalves/Documents/Source/app/node_modules/typescript/bin/typescript.js",
+		"/C/Users/abraaoalves/Documents/Source/app/charts/teste.ts",
+		"/C/Users/abraaoalves/Documents/Source/app/charts/other_teste.ts",
+		"/C/Users/abraaoalves/Documents/Source/app/charts/akakaa.ts",
+		"/C/Users/abraaoalves/Documents/Source/app/charts.js.map",
+		"/C/Users/abraaoalves/AppData/Roaming/Sublime Text 3/Packages/T3S/Default.sublime-keymap",
+		"/C/Users/abraaoalves/Documents/Source/ts-sample/ts-sample.sublime-project",
+		"/C/Users/abraaoalves/Documents/Source/ts-sample/employee.ts",
+		"/C/Users/abraaoalves/Documents/Source/ts-sample/person.ts",
+		"/C/Users/abraaoalves/AppData/Roaming/Sublime Text 3/Packages/T3S/Typescript.tmLanguage",
+		"/C/Users/abraaoalves/Documents/Source/ts-sample/my.sublimets"
+	],
+	"find":
+	{
+		"height": 34.0
+	},
+	"find_in_files":
+	{
+		"height": 90.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"config",
+			"dist",
+			"keepalive",
+			"tmp",
+			"watch",
+			"///<reference path=\"../typings/tests.d.ts\" />\n\nimport chai = require('chai');\n\nvar assert = chai.assert;\n\ndescribe('Array', function(){\n  describe('#indexOf()', function(){\n    it('should return -1 when the value is not present', function(){\n		assert.equal(-1, [1,2,3].indexOf(5));\n      	assert.equal(-1, [1,2,3].indexOf(0));\n\n\n    });\n  });\n});",
+			"shou",
+			" ",
+			"teste",
+			"languageservice"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+		],
+		"reverse": false,
+		"show_context": false,
+		"use_buffer2": false,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 2,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "/C/Git/chart/test/specs/exampleSpec.ts",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2919,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								105,
+								105
+							]
+						],
+						"settings":
+						{
+							"auto_complete": false,
+							"extensions":
+							[
+								"ts"
+							],
+							"syntax": "Packages/T3S/Typescript.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "/C/Git/chart/src/scripts/helloworld.ts",
+					"semi_transient": true,
+					"settings":
+					{
+						"buffer_size": 1720,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"auto_complete": false,
+							"extensions":
+							[
+								"ts"
+							],
+							"syntax": "Packages/T3S/Typescript.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "/C/Git/chart/Gruntfile.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 11303,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1856,
+								1856
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 405.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "/C/Git/chart/src/index.html",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 3127,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								3127,
+								3127
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML/HTML.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 801.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 3,
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "/C/Git/chart/dist/index.html",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1373,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1193,
+								1193
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML/HTML.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 4,
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 22.0
+	},
+	"input":
+	{
+		"height": 30.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"project": "chart.sublime-project",
+	"replace":
+	{
+		"height": 40.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+			[
+				"setjson",
+				"test\\setJsonTest.ts"
+			],
+			[
+				"tsd",
+				"tsd.json"
+			],
+			[
+				"gulp",
+				"gulpfile.js"
+			]
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 500.0,
+		"selected_items":
+		[
+		],
+		"width": 380.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 282.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}

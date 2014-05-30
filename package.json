@@ -1,0 +1,31 @@
+{
+  "name": "app-chart",
+  "version": "0.0.1",
+  "description": "A app with chart objects",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha test/"
+  },
+  "keywords": [],
+  "author": {
+    "name": "Abraão Alves",
+    "email": "abraao.teodosio@gmail.com",
+    "url": "github.com/abraaoalves"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "gulp": "~3.6.2",
+    "gulp-tsc": "~0.7.0",
+    "typescript": "~1.0.0",
+    "chai": "~1.6.1",
+    "mocha": "~1.10.0",
+    "karma": "~0.12.16",
+    "gulp-karma": "0.0.4",
+    "karma-mocha": "~0.1.3",
+    "karma-chrome-launcher": "~0.1.4",
+    "karma-chai": "~0.1.0"
+  },
+  "dependencies": {
+    "knockout": "3.x"
+  }
+}
