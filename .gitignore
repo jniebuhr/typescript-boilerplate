@@ -1,0 +1,10 @@
+/bin/
+/node_modules/
+/temp/
+/.tscache/
+/.gulp/
+/typings/*
+*.js
+*.js.map
+!/gulpfile.js
+!/typings/tsd.d.ts

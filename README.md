@@ -1,7 +1,7 @@
-# ts-Boilerplate-Stream
+# ts-Boilerplate
 
-> A boilerplate for build typescript apps using:
+> My boilerplate for building typescript apps using:
 
-* gulp
-* karma
-* mocha 
+* gulp taskrunner 
+* karma testrunner
+* mocha testframework
