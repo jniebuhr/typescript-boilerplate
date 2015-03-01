@@ -10,7 +10,8 @@ var defTSOptions = {
 
 function typescript_default(options) {
     options = options || {}; 
-    return typescript(_extends(options));
+    _extends(options);
+    return typescript(options);
 
     function _extends(obj) {
         for(var prop in defTSOptions) obj[prop] = obj[prop] || defTSOptions[prop];
