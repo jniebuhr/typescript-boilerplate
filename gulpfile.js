@@ -32,9 +32,9 @@ gulp.task('default', ['compile']);
 
 gulp.task('compile', function() {
     gulp.src(['./src/*.ts']).pipe(typescript_default({
-        out: './bin/app.js',
+        out: './app.js',
         removeComments: true,
-        mapRoot: './bin/app.js'
+        mapRoot: './app.js'
     })).pipe(gulp.dest('./bin/'));
 });
 
